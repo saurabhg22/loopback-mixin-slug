@@ -28,7 +28,7 @@ module.exports = (Model, options) => {
 
     Model.findUniqueSlug = async (instance) => {
         let baseSlug = Model.getBaseSlug(instance);
-        let regex = baseSlug === '0' ? new RegExp(`^${baseSlug}_([0-9]+){0,1}$`) : new RegExp(`^([0-9]+)$`);
+        let regex = baseSlug === '0' ? new RegExp(`^([0-9]+)$`) : new RegExp(`^${baseSlug}_([0-9]+){0,1}$`);
         let similarInstances = await Model.find({
             where: {
                 slug: {
@@ -52,7 +52,7 @@ module.exports = (Model, options) => {
         return baseSlug + '_' + (maxCount + 1);
     }
 
-    Model.observe('before save', async (ctx, next) => {
+    Model.observe('before save', async (ctx) => {
         var instance = ctx.instance || ctx.data;
         let where = {};
         if (instance.id) {
@@ -64,7 +64,7 @@ module.exports = (Model, options) => {
         let createNewSlug = false;
         if (!ctx.isNewInstance) {
             let prevInstance = await Model.findOne({ where });
-            createNewSlug = !prevInstance.slug;
+            createNewSlug = !prevInstance.slug && !instance.slug;
         }
         else {
             createNewSlug = !instance.slug;
@@ -75,7 +75,15 @@ module.exports = (Model, options) => {
     });
 
     Model.updateSlug = async () => {
-        let instances = await Model.find({ where: { slug: { exists: false } } });
+        let instances = await Model.find({
+            where: {
+                or: [
+                    { slug: { exists: false } },
+                    { slug: "" },
+                    { slug: null }
+                ]
+            }
+        });
         for (let i = 0; i < instances.length; i++) {
             let instance = instances[i];
             let slug = await Model.findUniqueSlug(instance);
