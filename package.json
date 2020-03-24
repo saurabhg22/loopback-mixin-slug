@@ -2,7 +2,7 @@
   "name": "loopback-mixin-slug",
   "version": "1.0.0",
   "description": "Creates slugs for documents and retrieve documents by slugs.",
-  "main": "index.js",
+  "main": "Slug.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
