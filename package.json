@@ -1,0 +1,24 @@
+{
+  "name": "loopback-mixin-slug",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saurabhg22/loopback-mixin-slug.git"
+  },
+  "keywords": [
+    "Loopback",
+    "Mixin",
+    "Slug"
+  ],
+  "author": "Saurabh Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saurabhg22/loopback-mixin-slug/issues"
+  },
+  "homepage": "https://github.com/saurabhg22/loopback-mixin-slug#readme"
+}
