@@ -93,7 +93,7 @@ module.exports = (Model, options) => {
             await instance.updateAttributes({ slug });
         }
     }
-
+    console.log(`attaching updateSlug to ${Model.name}`)
     setTimeout(Model.updateSlug, 5000);
 }
 
