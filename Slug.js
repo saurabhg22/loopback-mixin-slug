@@ -43,7 +43,7 @@ module.exports = (Model, options) => {
         _.forEach(similarInstances, similarInstance => {
             let match = similarInstance.slug.match(regex), count;
             if (match[1]) {
-                count = parseInt(match[1]);
+                count = parseInt(match[1].replace('_', ''));
             }
             if (count > maxCount) {
                 maxCount = count;
