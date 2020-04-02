@@ -28,7 +28,7 @@ module.exports = (Model, options) => {
 
     Model.findUniqueSlug = async (instance) => {
         let baseSlug = Model.getBaseSlug(instance);
-        let regex = baseSlug === '0' ? new RegExp(`^([0-9]+)$`) : new RegExp(`^${baseSlug}_([0-9]+){0,1}$`);
+        let regex = baseSlug === '0' ? new RegExp(`^([0-9]+)$`) : new RegExp(`^${baseSlug}(_[0-9]+){0,1}$`);
         let similarInstances = await Model.find({
             where: {
                 slug: {
