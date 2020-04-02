@@ -75,6 +75,7 @@ module.exports = (Model, options) => {
     });
 
     Model.updateSlug = async () => {
+        console.log(`${Model.name}.updateSlug`);
         let instances = await Model.find({
             where: {
                 or: [
