@@ -84,9 +84,11 @@ module.exports = (Model, options) => {
                 ]
             }
         });
+        console.log(`got ${instances.length} instances of ${Model.name} with no slug`)
         for (let i = 0; i < instances.length; i++) {
             let instance = instances[i];
             let slug = await Model.findUniqueSlug(instance);
+            console.log(`updating slug of ${Model.name} ${instance.id} to ${slug}`);
             await instance.updateAttributes({ slug });
         }
     }
