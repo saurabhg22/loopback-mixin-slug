@@ -22,13 +22,15 @@ module.exports = (Model, options) => {
 
 
     Model.getBaseSlug = (instance) => {
-        const slug = _.snakeCase(_.trim(_.join(_.filter(_.map(fields, field => instance[field])), '_')));
-        return slug === '_' ? '0' : slug;
+        let slug = _.snakeCase(_.trim(_.join(_.filter(_.map(fields, field => instance[field])), '_')));
+        slug = slug === '_' ? '0' : slug;
+        slug = slug.replace(/_/g, '-');
+        return slug;
     }
 
     Model.findUniqueSlug = async (instance) => {
         let baseSlug = Model.getBaseSlug(instance);
-        let regex = baseSlug === '0' ? new RegExp(`^([0-9]+)$`) : new RegExp(`^${baseSlug}(_[0-9]+){0,1}$`);
+        let regex = baseSlug === '0' ? new RegExp(`^([0-9]+)$`) : new RegExp(`^${baseSlug}(-[0-9]+){0,1}$`);
         let similarInstances = await Model.find({
             where: {
                 slug: {
@@ -43,13 +45,13 @@ module.exports = (Model, options) => {
         _.forEach(similarInstances, similarInstance => {
             let match = similarInstance.slug.match(regex), count = 0;
             if (match[1]) {
-                count = parseInt(match[1].replace('_', ''));
+                count = parseInt(match[1].replace('-', ''));
             }
             if (count > maxCount) {
                 maxCount = count;
             }
         });
-        return baseSlug + '_' + (maxCount + 1);
+        return baseSlug + '-' + (maxCount + 1);
     }
 
     Model.observe('before save', async (ctx) => {
