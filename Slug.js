@@ -6,8 +6,7 @@ module.exports = (Model, options) => {
     if (_.isString(fields)) {
         fields = [fields];
     }
-    Model.defineProperty('slug', { type: String });
-    Model.validatesUniquenessOf('slug', { message: 'is not unique' });
+    Model.defineProperty('slug', { type: String, index:{ unique:true } });
     Model.observe('access', function (ctx, next) {
         if (ctx.query.where && ctx.query.where.id) {
             ctx.query.where.or = [{
