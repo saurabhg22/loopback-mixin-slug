@@ -71,7 +71,7 @@ module.exports = (Model, options) => {
             where = ctx.where;
         }
         if(instance.slug){
-            await validateSlug(instance.slug)
+            await Model.validateSlug(instance.slug)
         }
         let createNewSlug = false;
         if (!ctx.isNewInstance) {
