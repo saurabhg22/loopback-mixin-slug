@@ -20,6 +20,10 @@ module.exports = (Model, options) => {
         next();
     });
 
+    Model.validateSlug = (slug) => {
+        if(!slug) return Promise.reject(`Slug is required.`);
+        return /^[a-zA-Z0-9]+([a-zA-Z0-9_-])*$/.test(slug);
+    }
 
     Model.getBaseSlug = (instance) => {
         let slug = _.snakeCase(_.trim(_.join(_.filter(_.map(fields, field => instance[field])), '_')));
@@ -62,6 +66,9 @@ module.exports = (Model, options) => {
         }
         else {
             where = ctx.where;
+        }
+        if(instance.slug){
+            await validateSlug(instance.slug)
         }
         let createNewSlug = false;
         if (!ctx.isNewInstance) {
