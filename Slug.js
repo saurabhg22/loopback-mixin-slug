@@ -9,10 +9,11 @@ module.exports = (Model, options) => {
     Model.defineProperty('slug', { type: String, index:{ unique:true } });
     Model.observe('access', function (ctx, next) {
         if (ctx.query.where && ctx.query.where.id) {
+            const id = ctx.query.where.id.toString();
             ctx.query.where.or = [{
-                id: ctx.query.where.id
+                id
             }, {
-                slug: ctx.query.where.id
+                slug: id
             }];
             ctx.query.where = _.omit(ctx.query.where, ['id']);
         }
