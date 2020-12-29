@@ -9,7 +9,10 @@ module.exports = (Model, options) => {
     Model.defineProperty('slug', { type: String, index:{ unique:true } });
     Model.observe('access', function (ctx, next) {
         if (ctx.query.where && ctx.query.where.id) {
-            const id = ctx.query.where.id.toString();
+            let id = ctx.query.where.id;
+            if(id.toString() && id.toString() !== '[object Object]'){
+                id = id.toString()
+            }
             ctx.query.where.or = [{
                 id
             }, {
