@@ -87,7 +87,6 @@ module.exports = (Model, options) => {
     });
 
     Model.updateSlug = async () => {
-        console.log(`${Model.name}.updateSlug`);
         let instances = await Model.find({
             where: {
                 or: [
@@ -97,15 +96,12 @@ module.exports = (Model, options) => {
                 ]
             }
         });
-        console.log(`got ${instances.length} instances of ${Model.name} with no slug`)
         for (let i = 0; i < instances.length; i++) {
             let instance = instances[i];
             let slug = await Model.findUniqueSlug(instance);
-            console.log(`updating slug of ${Model.name} ${instance.id} to ${slug}`);
             await instance.updateAttributes({ slug });
         }
     }
-    console.log(`attaching updateSlug to ${Model.name}`)
     setTimeout(Model.updateSlug, 5000);
 }
 
