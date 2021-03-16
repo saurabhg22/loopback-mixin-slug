@@ -23,7 +23,7 @@ module.exports = (Model, options) => {
         next();
     });
 
-    Model.validateSlug = (slug) => {
+    const validateSlug = (slug) => {
         if(!slug) return Promise.reject(`Slug is required.`);
         return /^[a-zA-Z0-9]+([a-zA-Z0-9_-])*$/.test(slug);
     }
@@ -35,10 +35,14 @@ module.exports = (Model, options) => {
         return slug;
     }
 
-    Model.findUniqueSlug = async (instance) => {
-        let baseSlug = Model.getBaseSlug(instance);
+    Model.findUniqueSlug = async (instance, ctx) => {
+        let _Model = Model;
+        if(ctx && ctx.Model){
+            _Model = ctx.Model;
+        }
+        let baseSlug = _Model.getBaseSlug(instance);
         let regex = baseSlug === '0' ? new RegExp(`^([0-9]+)$`) : new RegExp(`^${baseSlug}(-[0-9]+){0,1}$`);
-        let similarInstances = await Model.find({
+        let similarInstances = await _Model.find({
             where: {
                 slug: {
                     like: regex
@@ -71,18 +75,18 @@ module.exports = (Model, options) => {
             where = ctx.where;
         }
         if(instance.slug){
-            await Model.validateSlug(instance.slug)
+            await validateSlug(instance.slug)
         }
         let createNewSlug = false;
         if (!ctx.isNewInstance) {
-            let prevInstance = await Model.findOne({ where });
+            let prevInstance = await ctx.Model.findOne({ where });
             createNewSlug = !prevInstance.slug && !instance.slug;
         }
         else {
             createNewSlug = !instance.slug;
         }
         if (createNewSlug) {
-            instance.slug = await Model.findUniqueSlug(instance);
+            instance.slug = await ctx.Model.findUniqueSlug(instance, ctx);
         }
     });
 
