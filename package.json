@@ -1,6 +1,6 @@
 {
   "name": "loopback-mixin-slug",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Creates slugs for documents and retrieve documents by slugs.",
   "main": "Slug.js",
   "scripts": {
