@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/saurabhg22/loopback-mixin-slug#readme",
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "mui-wrapper-utils": "git+ssh://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/MUIWrapperUtils#master"
   }
 }
