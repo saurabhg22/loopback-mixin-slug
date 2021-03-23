@@ -22,8 +22,6 @@
   },
   "homepage": "https://github.com/saurabhg22/loopback-mixin-slug#readme",
   "dependencies": {
-    "@material-ui/core": "4.9.0",
-    "lodash": "^4.17.15",
-    "mui-wrapper-utils": "git+ssh://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/MUIWrapperUtils#master"
+    "lodash": "^4.17.15"
   }
 }
