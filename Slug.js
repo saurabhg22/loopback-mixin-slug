@@ -26,13 +26,29 @@ module.exports = (Model, options) => {
 		next();
 	});
 
-	const validateSlug = (slug) => {
-		if (!slug) return Promise.reject(`Slug is required.`);
+	Model.validateSlug = (slug) => {
+		if (!slug) return false;
 		return (
 			/^[a-z0-9]+([a-z0-9_-])*$/.test(slug) &&
 			/^([a-z0-9_-])*[a-z0-9]+$/.test(slug)
 		);
 	};
+
+	Model.isSlugValid = async (slug, id) => {
+		if(!Model.validateSlug(slug)){
+			return Promise.reject({
+				statusCode:400,
+				error:{
+					code: "INVALID_SLUG"
+				}
+			})
+		}
+
+		const instance = await Model.findOne({slug});
+		if(id && instance.id.toString() === id.toString()) return true;
+
+		return !instance;
+	}
 
 	Model.getBaseSlug = (instance) => {
 		let input = _.join(
@@ -94,7 +110,7 @@ module.exports = (Model, options) => {
 		} else {
 			where = ctx.where;
 		}
-		if (instance.slug && !validateSlug(instance.slug)) {
+		if (instance.slug && !Model.validateSlug(instance.slug)) {
 			return Promise.reject({
 				statusCode: 400,
 				message: "Invalid slug.",
