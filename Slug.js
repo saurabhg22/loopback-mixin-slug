@@ -44,8 +44,8 @@ module.exports = (Model, options) => {
 			})
 		}
 
-		const instance = await Model.findOne({slug});
-		if(id && instance.id.toString() === id.toString()) return true;
+		const instance = await Model.findOne({where:{slug}});
+		if(id && instance && instance.id.toString() === id.toString()) return true;
 
 		return !instance;
 	}
